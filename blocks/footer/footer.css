@@ -1,0 +1,131 @@
+footer {
+    background-color: var(--color-neutral-100);
+    font: var(--type-body-2-default-font);
+    letter-spacing: var(--type-body-2-default-letter-spacing);
+}
+
+footer .footer > div {
+    margin: auto;
+    max-width: 1200px;
+    padding: 40px 24px 24px;
+}
+
+footer .footer p {
+    margin: 0;
+}
+
+.storeview-switcher-button {
+    background: transparent;
+    padding-left: 0;
+}
+
+.storeview-modal-storeview-title {
+    margin-bottom: var(--spacing-xxbig);
+    padding-inline-start: var(--spacing-xbig);
+}
+
+.modal .close-button {
+    top: 40px !important;
+    right: 40px !important;
+}
+
+.storeview-single-store {
+    list-style-type: none;
+}
+
+.storeview-selection .storeview-multiple-stores {
+    list-style-image: url("../../icons/chevron-right.svg");
+    list-style-position: inside;
+}
+
+.storeview-selection > li {
+    margin-bottom: var(--spacing-small);
+}
+
+.storeview-multiple-stores > ul {
+    position: relative;
+    width: 100%;
+}
+
+.storeview-multiple-stores > ul > li {
+    list-style: none;
+    display: none;
+}
+
+.storeview-multiple-stores[aria-expanded="true"] {
+    list-style-image: url("../../icons/chevron-down.svg");
+}
+
+.storeview-multiple-stores[aria-expanded="true"] > ul {
+    padding-left: 0;
+}
+
+.storeview-multiple-stores[aria-expanded="true"] > ul > li {
+    display: block;
+    list-style-type: none;
+    margin-bottom: var(--spacing-small);
+}
+
+@media (min-width: 900px) {
+    footer .footer > div {
+        padding: 40px 32px 24px;
+    }
+}
+
+/* ============================================================
+   ComplianceSigns demo — footer brand restyle
+   ============================================================ */
+footer {
+  background-color: var(--cs-navy);
+  color: #c7d0de;
+}
+
+footer .footer > div {
+  max-width: 1200px;
+}
+
+footer .footer img {
+  max-width: 200px;
+  height: auto;
+}
+
+footer .footer h3,
+footer .footer h4,
+footer .footer strong {
+  font-family: var(--cs-heading-font);
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 1.6rem;
+  letter-spacing: 0.03em;
+}
+
+footer .footer p,
+footer .footer li {
+  color: #c7d0de;
+  font-size: 1.4rem;
+}
+
+footer .footer a {
+  color: #c7d0de;
+  font-weight: 400;
+}
+
+footer .footer a:hover {
+  color: var(--cs-orange);
+}
+
+footer .footer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+footer .footer .columns > div {
+  align-items: start;
+  gap: var(--spacing-big);
+}
+
+footer .footer hr {
+  border-bottom-color: rgb(255 255 255 / 15%);
+}

@@ -1,0 +1,193 @@
+/* add global styles that can be loaded post LCP here */
+
+/* ComplianceSigns demo — condensed display face for homepage headings */
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600;700&display=swap");
+
+/* ---- Homepage (ComplianceSigns migration) shared section theme ---- */
+
+/* Section titles across the homepage bands */
+main .section[class*="cs-"] h2 {
+  font-family: var(--cs-heading-font);
+  font-weight: 700;
+  font-size: 3.4rem;
+  line-height: 1.1;
+  letter-spacing: 0;
+  color: var(--cs-ink);
+  text-transform: none;
+  margin: 0 0 0.2em;
+}
+
+main .section.cs-section-lead h2 {
+  font-size: 2.6rem;
+  color: var(--cs-navy);
+}
+
+main .section[class*="cs-"] .cs-overline {
+  font-family: var(--cs-heading-font);
+  font-weight: 700;
+  font-size: 2rem;
+  color: var(--cs-navy);
+  margin: 0 0 0.5rem;
+  text-align: center;
+}
+
+main .section.cs-categories,
+main .section.cs-why {
+  text-align: center;
+}
+
+main .section.cs-categories > div,
+main .section.cs-bestsellers > div,
+main .section.cs-industries > div,
+main .section.cs-why > div {
+  max-width: 1200px;
+}
+
+/* Section heading rows are centered on the light bands */
+main .section.cs-categories .default-content-wrapper,
+main .section.cs-bestsellers .default-content-wrapper,
+main .section.cs-why .default-content-wrapper {
+  text-align: center;
+}
+
+main .section.cs-bestsellers,
+main .section.cs-why {
+  background-color: var(--cs-gray-band);
+  padding: var(--spacing-xbig) 0;
+  margin: 0;
+}
+
+/* "View All …" text links inside the light bands */
+main .section.cs-categories .default-content-wrapper a {
+  color: var(--cs-navy);
+  font-family: var(--cs-heading-font);
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+main .section.cs-categories .default-content-wrapper a:hover {
+  color: var(--cs-orange);
+}
+
+/* ---- Promo strip (3 marketing banners under the hero) ---- */
+main .section.cs-promos .columns img {
+  border-radius: 4px;
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+main .section.cs-promos {
+  margin: var(--spacing-small) 0 0;
+}
+
+/* ---- Industry tab bar (visual) ---- */
+main .section.cs-industries .default-content-wrapper ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 0;
+  margin: 0 0 var(--spacing-medium);
+  justify-content: flex-start;
+}
+
+main .section.cs-industries .default-content-wrapper ul li {
+  font-family: var(--cs-heading-font);
+  font-weight: 600;
+  font-size: 1.5rem;
+  padding: 0.5em 1.1em;
+  border-radius: 3px;
+  background: var(--cs-gray-band);
+  color: var(--cs-ink);
+}
+
+main .section.cs-industries .default-content-wrapper ul li:first-child {
+  background: var(--cs-navy);
+  color: #fff;
+}
+
+/* ---- Reviews band ---- */
+main .section.cs-reviews {
+  background: var(--cs-blue);
+  color: #fff;
+  margin: 0;
+  padding: var(--spacing-xbig) 0;
+}
+
+main .section.cs-reviews h2 {
+  color: #fff;
+}
+
+main .section.cs-reviews p {
+  color: #fff;
+  margin: 0.4rem 0;
+}
+
+main .section.cs-reviews img {
+  vertical-align: middle;
+  margin-left: 6px;
+}
+
+main .section.cs-reviews a.button {
+  background: var(--cs-orange);
+  border-color: var(--cs-orange);
+  color: #fff;
+  border-radius: 3px;
+  font-family: var(--cs-heading-font);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin-top: var(--spacing-small);
+}
+
+main .section.cs-reviews a.button:hover {
+  background: var(--cs-orange-hover);
+  border-color: var(--cs-orange-hover);
+}
+
+/* ---- Newsletter band ---- */
+main .section.cs-newsletter {
+  background: var(--cs-navy) url("https://www.compliancesigns.com/images/background-sign-up.jpg") center/cover no-repeat;
+  background-blend-mode: multiply;
+  color: #fff;
+  text-align: center;
+  margin: 0;
+  padding: var(--spacing-xxbig) 0;
+}
+
+main .section.cs-newsletter h2 {
+  color: #fff;
+  font-size: 3rem;
+}
+
+main .section.cs-newsletter p {
+  color: #fff;
+  font-size: 1.7rem;
+  max-width: 760px;
+  margin: 0.6rem auto;
+}
+
+main .section.cs-newsletter a.button {
+  background: var(--cs-orange);
+  border-color: var(--cs-orange);
+  color: #fff;
+  border-radius: 3px;
+  font-family: var(--cs-heading-font);
+  font-weight: 600;
+  margin-top: var(--spacing-small);
+}
+
+main .section.cs-newsletter a.button:hover {
+  background: var(--cs-orange-hover);
+  border-color: var(--cs-orange-hover);
+}
+
+@media (min-width: 900px) {
+  main .section[class*="cs-"] h2 {
+    font-size: 4rem;
+  }
+
+  main .section.cs-newsletter h2 {
+    font-size: 3.6rem;
+  }
+}
