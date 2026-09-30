@@ -1,18 +1,18 @@
 {
   "public": {
     "default": {
-      "commerce-core-endpoint": "https://na1-sandbox.api.commerce.adobe.com/JNyhFUqfNDvt6PUvqesSdY/graphql",
-      "commerce-endpoint": "https://na1-sandbox.api.commerce.adobe.com/JNyhFUqfNDvt6PUvqesSdY/graphql",
-      "commerce-assets-enabled": true,
+      "commerce-core-endpoint": "",
+      "commerce-endpoint": "",
+      "commerce-assets-enabled": false,
       "headers": {
         "all": {
-          "Store": "justeng"
+          "Store": "default"
         },
         "cs": {
           "Magento-Customer-Group": "",
-          "Magento-Store-Code": "juststore",
-          "Magento-Store-View-Code": "justeng",
-          "Magento-Website-Code": "justrite"
+          "Magento-Store-Code": "default",
+          "Magento-Store-View-Code": "default",
+          "Magento-Website-Code": "base"
         }
       },
       "analytics": {
@@ -20,18 +20,16 @@
         "environment": "Production",
         "store-id": 1,
         "store-name": "Main Website Store",
-        "store-url": "https://main--justrite--kmanns.aem.live/",
+        "store-url": "https://main--kukla-justrite--skukla.aem.live/",
         "store-view-id": 1,
         "store-view-name": "Default Store View",
         "website-id": 1,
         "website-name": "Main Website"
-      },
-      "commerce-b2b-enabled": true,
-      "commerce-companies-enabled": true
+      }
     }
   },
   "robots": {
-    "txt": "User-agent: *\nAllow: /\nDisallow: /drafts/\nDisallow: /enrichment/\nDisallow: /tools/\nDisallow: /plugins/experimentation/\n\nSitemap: https://main--justrite--kmanns.aem.live/sitemap.xml"
+    "txt": "User-agent: *\nAllow: /\nDisallow: /drafts/\nDisallow: /enrichment/\nDisallow: /tools/\nDisallow: /plugins/experimentation/\n\nSitemap: https://main--kukla-justrite--skukla.aem.live/sitemap.xml"
   },
   "sidekick": {
     "project": "Demo Builder Project",
@@ -42,7 +40,7 @@
         "environments": [
           "edit"
         ],
-        "url": "https://main--justrite--kmanns.aem.live/tools/picker/dist/index.html",
+        "url": "https://main--kukla-justrite--skukla.aem.live/tools/picker/dist/index.html",
         "isPalette": true,
         "paletteRect": "top: 54px; left: 5px; bottom: 5px; width: 300px; height: calc(100% - 59px); border-radius: var(--hlx-sk-button-border-radius); overflow: hidden; resize: horizontal;"
       },
@@ -52,7 +50,7 @@
         "environments": [
           "edit"
         ],
-        "url": "https://main--justrite--kmanns.aem.live/tools/segments/dist/index.html",
+        "url": "https://main--kukla-justrite--skukla.aem.live/tools/segments/dist/index.html",
         "isPalette": true,
         "paletteRect": "top: 54px; left: 5px; bottom: 5px; width: 300px; height: calc(100% - 59px); border-radius: var(--hlx-sk-button-border-radius); overflow: hidden; resize: horizontal;"
       },
