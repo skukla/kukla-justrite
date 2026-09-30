@@ -128,7 +128,7 @@ try {
         }
       } catch (_) { /* fall through to trigger */ }
     }
-    const triggerUrl = `https://285361-249darkllama-stage.adobeioruntime.net/api/v1/web/accs-discovery/prepublish-pdp?org=kmanns&site=justrite&path=${encodeURIComponent(lc)}`;
+    const triggerUrl = `https://285361-249darkllama-stage.adobeioruntime.net/api/v1/web/accs-discovery/prepublish-pdp?org=skukla&site=kukla-justrite&path=${encodeURIComponent(lc)}`;
     // One retry on 5xx with 1s backoff. Covers I/O Runtime cold start
     // + transient runtime failures without piling up retries that
     // would make a real outage take twice as long to surface.
