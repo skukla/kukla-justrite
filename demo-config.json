@@ -1,44 +1,70 @@
 {
   "public": {
     "default": {
-      "commerce-core-endpoint": "https://www.aemshop.net/graphql",
-      "commerce-endpoint": "https://www.aemshop.net/cs-graphql",
-      "commerce-assets-enabled": true,
+      "commerce-core-endpoint": "https://na1-sandbox.api.commerce.adobe.com/UoGYsHrcxMyeoVd2zUktZi/graphql",
+      "commerce-endpoint": "https://na1-sandbox.api.commerce.adobe.com/UoGYsHrcxMyeoVd2zUktZi/graphql",
+      "commerce-assets-enabled": false,
       "headers": {
         "all": {
-          "Store": "default"
+          "Store": "justrite_us"
         },
         "cs": {
-          "Magento-Store-Code": "main_website_store",
-          "Magento-Store-View-Code": "default",
-          "Magento-Website-Code": "base",
-          "x-api-key": "4dfa19c9fe6f4cccade55cc5b3da94f7",
-          "Magento-Environment-Id": "f38a0de0-764b-41fa-bd2c-5bc2f3c7b39a"
+          "Magento-Customer-Group": "",
+          "Magento-Store-Code": "justrite_store",
+          "Magento-Store-View-Code": "justrite_us",
+          "Magento-Website-Code": "justrite"
         }
       },
       "analytics": {
-        "aep-ims-org-id": null,
-        "aep-datastream-id": null,
         "base-currency-code": "USD",
-        "environment": "Testing",
-        "environment-id": "f38a0de0-764b-41fa-bd2c-5bc2f3c7b39a",
-        "store-code": "main_website_store",
+        "environment": "Production",
         "store-id": 1,
         "store-name": "Main Website Store",
-        "store-url": "https://www.aemshop.net",
-        "store-view-code": "default",
+        "store-url": "https://main--kukla-justrite--skukla.aem.live/",
         "store-view-id": 1,
         "store-view-name": "Default Store View",
-        "website-code": "base",
         "website-id": 1,
         "website-name": "Main Website"
       },
-      "plugins": {
-        "picker": {
-           "rootCategory": "YOUR_ROOT_CATEGORY_ID"
-         }
-      },
-      "commerce-companies-enabled": false
+      "commerce-b2b-enabled": true,
+      "commerce-companies-enabled": true
     }
+  },
+  "robots": {
+    "txt": "User-agent: *\nAllow: /\nDisallow: /drafts/\nDisallow: /enrichment/\nDisallow: /tools/\nDisallow: /plugins/experimentation/\n\nSitemap: https://main--kukla-justrite--skukla.aem.live/sitemap.xml"
+  },
+  "sidekick": {
+    "project": "Demo Builder Project",
+    "plugins": [
+      {
+        "id": "cif",
+        "title": "Commerce",
+        "environments": [
+          "edit"
+        ],
+        "url": "https://main--kukla-justrite--skukla.aem.live/tools/picker/dist/index.html",
+        "isPalette": true,
+        "paletteRect": "top: 54px; left: 5px; bottom: 5px; width: 300px; height: calc(100% - 59px); border-radius: var(--hlx-sk-button-border-radius); overflow: hidden; resize: horizontal;"
+      },
+      {
+        "id": "personalisation",
+        "title": "Personalisation",
+        "environments": [
+          "edit"
+        ],
+        "url": "https://main--kukla-justrite--skukla.aem.live/tools/segments/dist/index.html",
+        "isPalette": true,
+        "paletteRect": "top: 54px; left: 5px; bottom: 5px; width: 300px; height: calc(100% - 59px); border-radius: var(--hlx-sk-button-border-radius); overflow: hidden; resize: horizontal;"
+      },
+      {
+        "id": "quick-edit",
+        "title": "Quick Edit",
+        "environments": [
+          "dev",
+          "preview"
+        ],
+        "event": "quick-edit"
+      }
+    ]
   }
 }
