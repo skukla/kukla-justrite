@@ -128,7 +128,7 @@ try {
         }
       } catch (_) { /* fall through to trigger */ }
     }
-    const triggerUrl = `https://285361-249darkllama-stage.adobeioruntime.net/api/v1/web/accs-discovery/prepublish-pdp?org=kmanns&site=justrite&path=${encodeURIComponent(lc)}`;
+    const triggerUrl = `https://285361-249darkllama-stage.adobeioruntime.net/api/v1/web/accs-discovery/prepublish-pdp?org=skukla&site=kukla-justrite&path=${encodeURIComponent(lc)}`;
     // One retry on 5xx with 1s backoff. Covers I/O Runtime cold start
     // + transient runtime failures without piling up retries that
     // would make a real outage take twice as long to surface.
@@ -145,8 +145,16 @@ try {
       r = await tryTrigger();
     }
     if (r && r.ok) {
-      const sep = lc.includes('?') ? '&' : '?';
-      window.location.replace(`${lc}${sep}${RETRY_FLAG}=1`);
+      // The action publishes the product at its one canonical path and says
+      // where; an older link form (or any path Helix would clean) lands there.
+      let target = lc;
+      try {
+        const body = await r.json();
+        if (body && typeof body.path === 'string' && /^\/products\/[^/?#]+\/[^/?#]+$/.test(body.path)) {
+          target = body.path;
+        }
+      } catch (_) { /* keep the requested path */ }
+      window.location.replace(`${target}?${RETRY_FLAG}=1`);
       return;
     }
     // Action failed after retry — the SKU has no publishable PDP
