@@ -1,0 +1,18 @@
+{
+  "data": {
+    "total": 1,
+    "offset": 0,
+    "limit": 1,
+    "data": [
+      {
+        "Key": "_stub",
+        "Value": "Label overrides are authored as DA.live /placeholders sheets. This file only answers the storefront's request so the browser console stays quiet; it sets no label."
+      }
+    ]
+  },
+  ":names": [
+    "data"
+  ],
+  ":version": 3,
+  ":type": "multi-sheet"
+}

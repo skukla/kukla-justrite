@@ -13,12 +13,10 @@ import {
     signInUser,
 } from "../../actions";
 
-const poCompanyId = Cypress.env("poCypressCompanyId");
-
 // Quote role configuration with negotiable quote permissions
 const quoteRoleConfig = {
     role_name: `Quote User ${Cypress._.random(0, 999999)}`,
-    company_id: poCompanyId,
+    company_id: 13,
     permissions: [
         { resource_id: 'Magento_Company::index', permission: 'allow' },
         { resource_id: 'Magento_Company::view', permission: 'allow' },
@@ -76,7 +74,7 @@ describe("Verify B2B Quote feature", { tags: "@skipAco" }, () => {
                 email: username,
                 password: customerData.customer.password,
                 isSubscribed: customerData.customer.is_subscribed,
-                companyId: poCompanyId,
+                companyId: 13,
             };
 
             return createUserAssignCompanyAndRole(testUser, quoteRoleId);

@@ -40,7 +40,6 @@ import {
   fetchPlaceholders,
   rootLink,
   getProductLink,
-  renderCartItemPromotions,
   ACCEPTED_FILE_TYPES,
 } from '../../scripts/commerce.js';
 
@@ -295,9 +294,6 @@ export default async function decorate(block) {
         },
 
         Footer: (ctx) => {
-          // Promotion / discount rule labels
-          renderCartItemPromotions(ctx);
-
           // Edit Link
           if (ctx.item?.itemType === 'ConfigurableCartItem' && enableUpdatingProduct === 'true') {
             const editLink = document.createElement('div');

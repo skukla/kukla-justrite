@@ -218,7 +218,6 @@ export default async function decorate(block) {
           routeProduct: createProductLink,
           recId: recid,
           currentProduct,
-          cartSkus: context.cartSkus,
           userViewHistory: context.userViewHistory,
           userPurchaseHistory: context.userPurchaseHistory,
           slots: {
@@ -330,16 +329,9 @@ export default async function decorate(block) {
     // Check if significant context changes occurred that warrant reloading recommendations
     const significantChanges = ['currentSku', 'currentProductPrice', 'pageType', 'category'];
 
-    const hasSignificantChanges = significantChanges.some(
+    return significantChanges.some(
       (key) => newContext[key] !== previousContext[key] && newContext[key] !== undefined,
     );
-
-    // cartSkus is a new array reference on every update, so compare by content
-    const cartSkusChanged = newContext.cartSkus !== undefined
-      && (newContext.cartSkus.length !== previousContext.cartSkus?.length
-        || newContext.cartSkus.some((sku, index) => sku !== previousContext.cartSkus?.[index]));
-
-    return hasSignificantChanges || cartSkusChanged;
   }
 
   function updateContext(updates) {
@@ -365,18 +357,12 @@ export default async function decorate(block) {
   }
 
   function handleProductChanges({ productContext }) {
-    const incomingSku = productContext?.sku;
-    // Ignore productContext pushes for a different SKU once currentSku is set
-    // (e.g. the cart dropin's own add-to-cart tracking push for another product).
-    if (context.currentSku !== undefined && incomingSku !== context.currentSku) {
-      return;
-    }
     const pricing = productContext?.pricing;
     const price = pricing
       ? (pricing.specialPrice ?? pricing.regularPrice)
       : undefined;
     updateContext({
-      currentSku: incomingSku,
+      currentSku: productContext?.sku,
       currentProductPrice: price,
     });
   }
@@ -389,19 +375,18 @@ export default async function decorate(block) {
     updateContext({ pageType: pageContext?.pageType });
   }
 
-  function handleCartChanges(cartData) {
-    const cartSkus = !cartData || cartData.totalQuantity === 0
+  function handleCartChanges({ shoppingCartContext }) {
+    const cartSkus = shoppingCartContext?.totalQuantity === 0
       ? []
-      : cartData.items?.map((item) => item.sku) ?? [];
+      : shoppingCartContext?.items?.map(({ product }) => product.sku);
     updateContext({ cartSkus });
   }
-
-  events.on('cart/data', handleCartChanges, { eager: true });
 
   window.adobeDataLayer.push((dl) => {
     dl.addEventListener('adobeDataLayer:change', handlePageTypeChanges, { path: 'pageContext' });
     dl.addEventListener('adobeDataLayer:change', handleProductChanges, { path: 'productContext' });
     dl.addEventListener('adobeDataLayer:change', handleCategoryChanges, { path: 'categoryContext' });
+    dl.addEventListener('adobeDataLayer:change', handleCartChanges, { path: 'shoppingCartContext' });
   });
 
   if (isMobile) {

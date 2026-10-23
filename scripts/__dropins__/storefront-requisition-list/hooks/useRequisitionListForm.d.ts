@@ -19,7 +19,6 @@ export type RequisitionListFormMode = 'create' | 'update';
 export type RequisitionListFormValues = {
     name: string;
     description?: string;
-    is_public?: boolean;
 };
 type UseRequisitionListFormReturn = {
     error: string | null;

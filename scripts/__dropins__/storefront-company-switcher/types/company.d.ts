@@ -57,17 +57,6 @@ export interface UseCompanyDataReturn {
     handleCompanyChange: (event: Event) => Promise<void>;
 }
 /**
- * Company-scoped catalog view context served by the backend via
- * `Company.catalogViewContext`.
- *
- * `accessToken` is null until a restricted access key is provisioned/set up
- * on the target environment.
- */
-export interface CatalogViewContext {
-    catalogViewId: string;
-    accessToken: string | null;
-}
-/**
  * GraphQL response wrapper
  */
 export interface GraphQLResponse {

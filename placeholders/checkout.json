@@ -1,22 +1,11 @@
 {
-  "data": {
-    "total": 2,
-    "offset": 0,
-    "limit": 2,
-    "data": [
-      {
-        "Key": "Checkout.Summary.heading",
-        "Value": "Your Cart ({count})"
-      },
-      {
-        "Key": "Checkout.Summary.Edit",
-        "Value": "Edit"
-      }
-    ]
-  },
-  ":names": [
-    "data"
-  ],
-  ":version": 3,
-  ":type": "multi-sheet"
+  "total": 1,
+  "offset": 0,
+  "limit": 1,
+  "data": [
+    {
+      "Key": "_stub",
+      "Value": "Label overrides are authored as DA.live /placeholders sheets; dropin defaults apply until then. This stub only keeps the browser console quiet."
+    }
+  ]
 }

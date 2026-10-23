@@ -16,9 +16,6 @@
  *******************************************************************/
 import { FunctionComponent } from 'preact';
 export interface ShareRequisitionListContentProps {
-    isPublic?: boolean;
-    recipientEmails?: string;
-    onRecipientEmailsChange?: (emails: string) => void;
     loadingUsers: boolean;
     usersErrorMessage: string | null;
     loadingLink: boolean;

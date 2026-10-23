@@ -19,4 +19,3 @@ export * from './fetch-graphql';
 export * from './customerCompanyContext';
 export * from './setCompanyHeaders';
 export * from './setGroupHeaders';
-export * from './setCatalogViewHeaders';
