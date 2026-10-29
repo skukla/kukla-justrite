@@ -28,5 +28,4 @@ export interface RequisitionList {
     items_count: number;
     items: Item[];
     page_info?: PageInfo;
-    is_public?: boolean;
 }

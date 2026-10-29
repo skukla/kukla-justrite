@@ -18,7 +18,6 @@ import {
   assertOrderConfirmationShippingMethod,
   assertSelectedPaymentMethod,
   assertOrderCommentsVisible,
-  assertEachCartLineHasPromotionLabelsRegion,
 } from "../../assertions";
 import {
   customerShippingAddress,
@@ -61,7 +60,6 @@ describe("Verify guest user can place order", { tags: "@skipSaasProd" }, () => {
       "/products/youth-tee/adb150",
     )(".cart-mini-cart");
     assertProductImage(Cypress.env("productImageName"))(".cart-mini-cart");
-    assertEachCartLineHasPromotionLabelsRegion(".cart-mini-cart");
     cy.contains("View Cart").click();
     assertCartSummaryProduct(
       "Youth tee",
@@ -78,7 +76,6 @@ describe("Verify guest user can place order", { tags: "@skipSaasProd" }, () => {
     assertProductImage(Cypress.env("productImageName"))(
       ".commerce-cart-wrapper",
     );
-    assertEachCartLineHasPromotionLabelsRegion(".commerce-cart-wrapper");
     cy.contains("Estimated Shipping").should("be.visible");
     cy.get(".dropin-button--primary").contains("Checkout").click();
     assertCartSummaryMisc(2);
@@ -90,7 +87,6 @@ describe("Verify guest user can place order", { tags: "@skipSaasProd" }, () => {
       "$20.00",
       "0",
     );
-    assertEachCartLineHasPromotionLabelsRegion(".cart-cart-summary-list");
     cy.contains("Estimated Shipping").should("be.visible");
     const apiMethod = "setGuestEmailOnCart";
     const urlTest = Cypress.env("graphqlEndPoint");

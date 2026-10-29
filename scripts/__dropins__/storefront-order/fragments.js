@@ -88,7 +88,6 @@ const A = `fragment REQUEST_RETURN_ORDER_FRAGMENT on Return {
   product_name
   product_url_key
   id
-  free_gift_label
   quantity_ordered
   quantity_shipped
   quantity_canceled
@@ -460,7 +459,7 @@ ${_}`, m = `fragment PLACE_ORDER_FRAGMENT on PlaceOrderOutput {
     ...GUEST_ORDER_FRAGMENT
   }
 }
-${s}`, l = `fragment PLACE_NEGOTIABLE_QUOTE_ORDER_FRAGMENT on PlaceNegotiableQuoteOrderOutputV2 {
+${s}`, G = `fragment PLACE_NEGOTIABLE_QUOTE_ORDER_FRAGMENT on PlaceNegotiableQuoteOrderOutputV2 {
   errors {
     code
     message
@@ -483,7 +482,7 @@ s as GUEST_ORDER_FRAGMENT,
 a as ORDER_ITEM_DETAILS_FRAGMENT,
 E as ORDER_ITEM_FRAGMENT,
 i as ORDER_SUMMARY_FRAGMENT,
-l as PLACE_NEGOTIABLE_QUOTE_ORDER_FRAGMENT,
+G as PLACE_NEGOTIABLE_QUOTE_ORDER_FRAGMENT,
 m as PLACE_ORDER_FRAGMENT,
 t as PRICE_DETAILS_FRAGMENT,
 _ as PRODUCT_DETAILS_FRAGMENT,

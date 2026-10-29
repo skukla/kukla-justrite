@@ -16,4 +16,3 @@
  *******************************************************************/
 export * from './transform-requisition-list';
 export * from './transform-product';
-export * from './transform-store-config';

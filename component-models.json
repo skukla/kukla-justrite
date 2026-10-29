@@ -357,11 +357,6 @@
         "component": "boolean",
         "name": "minified-view",
         "label": "Minified View"
-      },
-      {
-        "component": "boolean",
-        "name": "search",
-        "label": "Enable Order Search"
       }
     ]
   },
@@ -423,60 +418,6 @@
         "component": "text",
         "name": "fragmentUrlText",
         "label": "Fragment URL Text"
-      }
-    ]
-  },
-  {
-    "id": "hero-v2",
-    "fields": [
-      {
-        "component": "reference",
-        "valueType": "string",
-        "name": "image",
-        "label": "Image",
-        "multi": false
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "imageAlt",
-        "label": "Image Alt",
-        "value": ""
-      },
-      {
-        "component": "text",
-        "name": "title",
-        "label": "Title",
-        "valueType": "string",
-        "value": ""
-      },
-      {
-        "component": "text",
-        "name": "subtitle",
-        "label": "Subtitle",
-        "valueType": "string",
-        "value": ""
-      },
-      {
-        "component": "text",
-        "name": "description",
-        "label": "Description",
-        "valueType": "string",
-        "value": ""
-      },
-      {
-        "component": "text",
-        "name": "ctaLabel",
-        "label": "CTA Label",
-        "valueType": "string",
-        "value": ""
-      },
-      {
-        "component": "text",
-        "name": "ctaUrl",
-        "label": "CTA URL",
-        "valueType": "string",
-        "value": ""
       }
     ]
   },
@@ -552,6 +493,94 @@
     ]
   },
   {
+    "id": "targeted-block",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "content",
+        "label": "Content"
+      },
+      {
+        "component": "text",
+        "name": "customerGroups",
+        "label": "Customer Groups",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "customerSegments",
+        "label": "Customer Segments",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "type",
+        "label": "Type",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "fragment",
+        "label": "Fragment",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "hero-v2",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Image Alt",
+        "value": ""
+      },
+      {
+        "component": "text",
+        "name": "title",
+        "label": "Title",
+        "valueType": "string",
+        "value": ""
+      },
+      {
+        "component": "text",
+        "name": "subtitle",
+        "label": "Subtitle",
+        "valueType": "string",
+        "value": ""
+      },
+      {
+        "component": "text",
+        "name": "description",
+        "label": "Description",
+        "valueType": "string",
+        "value": ""
+      },
+      {
+        "component": "text",
+        "name": "ctaLabel",
+        "label": "CTA Label",
+        "valueType": "string",
+        "value": ""
+      },
+      {
+        "component": "text",
+        "name": "ctaUrl",
+        "label": "CTA URL",
+        "valueType": "string",
+        "value": ""
+      }
+    ]
+  },
+  {
     "id": "product-teaser",
     "fields": [
       {
@@ -623,40 +652,6 @@
         "component": "richtext",
         "name": "content",
         "label": "Content",
-        "valueType": "string"
-      }
-    ]
-  },
-  {
-    "id": "targeted-block",
-    "fields": [
-      {
-        "component": "richtext",
-        "name": "content",
-        "label": "Content"
-      },
-      {
-        "component": "text",
-        "name": "customerGroups",
-        "label": "Customer Groups",
-        "valueType": "string"
-      },
-      {
-        "component": "text",
-        "name": "customerSegments",
-        "label": "Customer Segments",
-        "valueType": "string"
-      },
-      {
-        "component": "text",
-        "name": "type",
-        "label": "Type",
-        "valueType": "string"
-      },
-      {
-        "component": "text",
-        "name": "fragment",
-        "label": "Fragment",
         "valueType": "string"
       }
     ]

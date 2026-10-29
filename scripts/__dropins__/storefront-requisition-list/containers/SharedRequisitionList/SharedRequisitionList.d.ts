@@ -14,20 +14,12 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-import { Container } from '../../../node_modules/@dropins/tools/src/lib';
+import { Container } from '@dropins/tools/lib';
 export interface SharedRequisitionListProps {
     /**
      * The share token from the URL (e.g. from ?requisition_id=<token>).
      */
     token: string;
-    isPublic?: boolean;
-    getCartId?: () => string | Promise<string>;
-    onCartUpdated?: () => void | Promise<void>;
-    /**
-     * Builds the PDP URL for a product, given its `url_key`. When omitted,
-     * product name/image render as plain text/image instead of a link.
-     */
-    routeProduct?: (urlKey: string, sku: string) => string;
     /**
      * Called with the imported list UID and list name on a successful import.
      * The integration should navigate to the requisition list detail page.

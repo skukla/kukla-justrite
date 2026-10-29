@@ -23,7 +23,6 @@ import {
   assertAuthUser,
   assertOrderImageDisplay,
   assertOrderCommentsVisible,
-  assertEachCartLineHasPromotionLabelsRegion,
 } from "../../assertions";
 import {
   customerShippingAddress,
@@ -150,7 +149,6 @@ describe("Verify auth user can place order", { tags: "@skipSaasProd" }, () => {
       '/products/cypress-configurable-product-latest/cypress456'
     )('.cart-mini-cart');
     assertProductImage(Cypress.env('productImageName'))('.cart-mini-cart');
-    assertEachCartLineHasPromotionLabelsRegion('.cart-mini-cart');
     cy.visit('/cart');
     assertCartSummaryProduct(
       "Youth tee",
@@ -181,7 +179,6 @@ describe("Verify auth user can place order", { tags: "@skipSaasProd" }, () => {
       '/products/cypress-configurable-product-latest/cypress456'
     )('.commerce-cart-wrapper');
     assertProductImage(Cypress.env('productImageNameConfigurable'))('.commerce-cart-wrapper');
-    assertEachCartLineHasPromotionLabelsRegion('.commerce-cart-wrapper');
     cy.contains('Estimated Shipping').should('be.visible');
     cy.percyTakeSnapshot('Cart page');
     cy.get('.dropin-button.dropin-button--medium.dropin-button--primary')
@@ -204,7 +201,6 @@ describe("Verify auth user can place order", { tags: "@skipSaasProd" }, () => {
       '$60.00',
       '1'
     );
-    assertEachCartLineHasPromotionLabelsRegion('.cart-cart-summary-list');
     setGuestShippingAddress(customerShippingAddress, true);
     uncheckBillToShippingAddress();
     setGuestBillingAddress(customerBillingAddress, true);
