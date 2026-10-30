@@ -122,17 +122,36 @@
 <script nonce="aem">
   (function () {
     if (document.prerendering) return;
-    var m = location.pathname.match(/^\/products\/([^/]+)\/([^/]+)$/);
-    if (!m) return;
-    var lc = '/products/' + m[1].toLowerCase() + '/' + m[2].toLowerCase();
-    // Mixed case: redirect to lowercase before any paint
-    if (lc !== location.pathname) {
-      location.replace(lc);
+    var p = location.pathname;
+    // A published page reached by the recovery script's reload: take our
+    // parameters (pdpRetry, pdpFresh) back out of the address, keeping every
+    // other one as it is (the product list adds page/sort/filter itself), and
+    // without reloading. Never on the 404 page, where pdpRetry is the
+    // recovery script's loop guard.
+    var parts = location.search ? location.search.slice(1).split('&') : [];
+    var kept = parts.filter(function (kv) {
+      var k = kv.split('=')[0];
+      return k !== 'pdpRetry' && k !== 'pdpFresh';
+    });
+    if (!window.isErrorPage && kept.length !== parts.length) {
+      history.replaceState(history.state, '', p + (kept.length ? '?' + kept.join('&') : '') + location.hash);
+    }
+    var m = p.match(/^\/products\/([^/]+)\/([^/]+)$/);
+    if (m) {
+      var lc = '/products/' + m[1].toLowerCase() + '/' + m[2].toLowerCase();
+      // Mixed case: redirect to lowercase before any paint
+      if (lc !== p) {
+        location.replace(lc);
+        return;
+      }
+    } else if (!/^(?:\/[a-z0-9-]+)+$/.test(p) || p === '/404'
+      || p === '/categories/default' || p === '/products/default') {
+      // Neither a product nor a category address: not ours.
       return;
     }
-    // Already lowercase. If this is a 404 page (cold path: SKU never
-    // published), the storefront's default 404 chrome will paint before
-    // delayed.js loads and runs our cold-path snippet. Hide just the
+    // Already lowercase. If this is a 404 page (cold path: page never
+    // published), the storefront's default 404 chrome could paint before
+    // the recovery script at the end of the body runs. Hide just the
     // <main> (not the whole body) so the storefront's header and footer
     // — populated by scripts.js as usual — stay visible while we wait.
     // User sees real storefront chrome around a loading area, not a
@@ -163,6 +182,152 @@
     </div>
   </main>
   <footer></footer>
+
+<!-- === Smart 404 recovery (Demo Builder) === -->
+<script nonce="aem">
+// === Smart 404 PDP rebuild (Demo Builder) ===
+// Auto-publishes the page when a visitor hits a cold product address
+// (/products/{urlKey}/{sku}) or a cold category address (every segment
+// [a-z0-9-]; never /404 or the /categories/default and /products/default
+// templates). It shows a loading state in place of the storefront's
+// "Page Not Found" during the ~1-2 second cold-publish window, then
+// reloads into the published page. Any other path is left alone.
+(function smart404PdpRebuild() {
+  if (!window.isErrorPage) return;
+  const RETRY_FLAG = 'pdpRetry';
+  const { pathname } = window.location;
+  const PRODUCT = /^\/products\/([^/]+)\/([^/]+)$/;
+  const CATEGORY = /^(?:\/[a-z0-9-]+)+$/;
+  const TEMPLATES = ['/404', '/categories/default', '/products/default'];
+  const isProduct = PRODUCT.test(pathname);
+  const lc = pathname.toLowerCase();
+  // A product address is asked for lowercased; a category one must already be.
+  const isCategory = CATEGORY.test(isProduct ? lc : pathname) && !TEMPLATES.includes(lc);
+  if (!isProduct && !isCategory) return;
+  if (new URLSearchParams(window.location.search).has(RETRY_FLAG)) return;
+  // Where the action may send us: a page of the same kind.
+  const PAGE_PATH = isProduct ? /^\/products\/[^/?#]+\/[^/?#]+$/ : CATEGORY;
+  // This runs at the end of the 404 page's body, before the storefront's own
+  // scripts decorate <main>. So nothing is written into <main>: it stays
+  // hidden, and the loading state is an element of its own beside it, which
+  // nothing of the storefront's touches. The eager script in the page's
+  // <head> already hid <main> (#smart-404-cold-hide) before it painted.
+  const mainEl = document.querySelector('main');
+  const hide = document.createElement('style');
+  hide.textContent = 'main { display: none; }';
+  document.head.appendChild(hide);
+  // Loading state: a centered spinner with a caption ("Loading product…" on
+  // a product address, "Loading…" on a category one). Element-level inline
+  // style attributes are governed by style-src 'unsafe-inline' (not the
+  // nonce or strict-dynamic), which storefront CSPs we have inspected allow.
+  // Uses the storefront design tokens with hardcoded fallbacks so it renders
+  // cleanly when a storefront does not define them. The spinner is a
+  // CSS-only rotating ring (no images, no assets to load), so it renders the
+  // moment it is painted.
+  const caption = isProduct ? 'Loading product…' : 'Loading…';
+  // The tab says what is happening, not "Page not found"; put back with the 404.
+  const ownTitle = document.title;
+  document.title = 'Loading…';
+  const WRAP = 'display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:50vh;padding:var(--spacing-large,40px) var(--spacing-medium,20px);gap:var(--spacing-medium,20px);';
+  const SPIN = 'width:48px;height:48px;border:4px solid var(--color-neutral-200,#f0f0f0);border-top-color:var(--color-brand-500,#454545);border-radius:50%;animation:smart404Spin 0.8s linear infinite;';
+  const TEXT = 'font:var(--type-body-1-default-font,1.25rem/1.5 sans-serif);color:var(--color-brand-500,#454545);';
+  const ANIM = '<style>@keyframes smart404Spin{to{transform:rotate(360deg)}}</style>';
+  const loading = document.createElement('div');
+  loading.id = 'smart-404-loading';
+  loading.innerHTML = `<div style="${WRAP}"><div style="${SPIN}"></div><div style="${TEXT}">${caption}</div></div>${ANIM}`;
+  if (mainEl) mainEl.before(loading);
+  else document.body.append(loading);
+  // No such category: the storefront's own 404, where the shopper is. Taking
+  // our elements away is all it needs; <main> was never touched.
+  function showOwn404() {
+    document.title = ownTitle;
+    loading.remove();
+    hide.remove();
+    const eagerHide = document.getElementById('smart-404-cold-hide');
+    if (eagerHide) eagerHide.remove();
+  }
+  // The search the menu block links a category with no page to
+  // (searchFallbackHref in blocks/catalog-menu/catalog-menu-core.js), or
+  // null where it links none: the search block would read "10-20" as a range.
+  function categorySearch() {
+    const urlPath = lc.slice(1);
+    const [from, to] = urlPath.split('-');
+    const isNumber = (value) => Number.isFinite(Number(value));
+    if (to !== undefined && isNumber(from) && isNumber(to)) return null;
+    const filter = encodeURIComponent(`categoryPath:${urlPath}`);
+    return `/search?filter=${filter}`;
+  }
+  (async () => {
+    if (lc !== window.location.pathname) {
+      try {
+        const head = await fetch(lc, { method: 'HEAD' });
+        if (head.ok) {
+          window.location.replace(lc);
+          return;
+        }
+      } catch (_) { /* fall through to trigger */ }
+    }
+    const triggerUrl = `https://285361-249darkllama-stage.adobeioruntime.net/api/v1/web/accs-discovery/prepublish-pdp?org=skukla&site=kukla-justrite&path=${encodeURIComponent(lc)}`;
+    // One retry on 5xx with 1s backoff. Covers I/O Runtime cold start
+    // + transient runtime failures without piling up retries that
+    // would make a real outage take twice as long to surface.
+    async function tryTrigger() {
+      try {
+        return await fetch(triggerUrl, { method: 'POST' });
+      } catch (_) {
+        return null;
+      }
+    }
+    let r = await tryTrigger();
+    if (!r || (r.status >= 500 && r.status < 600)) {
+      await new Promise((res) => { setTimeout(res, 1000); });
+      r = await tryTrigger();
+    }
+    if (r && r.ok) {
+      // The action publishes the page at its one canonical path and says
+      // where; an older link form (or any path Helix would clean) lands there.
+      let target = lc;
+      try {
+        const body = await r.json();
+        if (body && typeof body.path === 'string' && PAGE_PATH.test(body.path)) {
+          target = body.path;
+        }
+      } catch (_) { /* keep the requested path */ }
+      window.location.replace(`${target}?${RETRY_FLAG}=1`);
+      return;
+    }
+    // 409: the address already has a live page, and this 404 came from a
+    // cache. Reload once with a value no cache has seen (the retry flag still
+    // stops a loop: if that reload 404s too, its 404 page is left alone).
+    if (r && r.status === 409) {
+      window.location.replace(`${lc}?${RETRY_FLAG}=1&pdpFresh=${Date.now()}`);
+      return;
+    }
+    // 503: the store could not be asked, so this may still be a category.
+    // Its products are one search away, as the menu would link them. Never
+    // for a product address: a product link must not land on a search.
+    const search = !isProduct && r && r.status === 503 ? categorySearch() : null;
+    if (search) {
+      window.location.replace(search);
+      return;
+    }
+    if (!isProduct) {
+      // No such category: the storefront's own 404, where the shopper is.
+      showOwn404();
+      return;
+    }
+    // Action failed after retry — the SKU has no publishable PDP
+    // (deleted, renamed, or never existed in Commerce). The honest UX is
+    // the storefront's native /404, not a custom in-place message that
+    // implies the product page exists. A full redirect makes the URL bar,
+    // history, and bookmarks all reflect reality. /404 is excluded from
+    // both patterns, so this never loops.
+    window.location.replace('/404');
+  })();
+}());
+// === end Smart 404 PDP rebuild ===
+</script>
+<!-- === end Smart 404 recovery === -->
 </body>
 
 </html>
