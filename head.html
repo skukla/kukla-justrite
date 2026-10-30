@@ -94,3 +94,34 @@
   })();
 </script>
 <!-- === end Smart 404 PDP eager redirect === -->
+
+
+<!-- === Demo Inspector loader (Demo Builder) === -->
+<script nonce="aem" type="module">
+  // Loads the Demo Inspector's tagging late in the page load, when
+  // scripts/delayed.js used to run: 3 s after every section of the page has
+  // loaded. Adobe's B2B template has no delayed.js, and its delayed loading
+  // waits for cookie consent; this does not.
+  const AFTER_SECTIONS_MS = 3000;
+  const POLL_MS = 250;
+  const GIVE_UP_MS = 15000;
+  const sectionsLoaded = () => !document.querySelector('main .section:not([data-section-status="loaded"])');
+  async function loadInspector() {
+    try {
+      const base = (window.hlx && window.hlx.codeBasePath) || '';
+      const { initInspector } = await import(`${base}/scripts/demo-inspector-init.js`);
+      initInspector();
+    } catch (_) { /* Inspector not available */ }
+  }
+  function whenSectionsLoaded(started) {
+    if (sectionsLoaded() || Date.now() - started > GIVE_UP_MS) {
+      setTimeout(loadInspector, AFTER_SECTIONS_MS);
+    } else {
+      setTimeout(() => whenSectionsLoaded(started), POLL_MS);
+    }
+  }
+  const start = () => whenSectionsLoaded(Date.now());
+  if (document.readyState === 'complete') start();
+  else window.addEventListener('load', start, { once: true });
+</script>
+<!-- === end Demo Inspector loader === -->
