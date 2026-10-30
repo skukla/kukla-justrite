@@ -69,17 +69,36 @@
 <script nonce="aem">
   (function () {
     if (document.prerendering) return;
-    var m = location.pathname.match(/^\/products\/([^/]+)\/([^/]+)$/);
-    if (!m) return;
-    var lc = '/products/' + m[1].toLowerCase() + '/' + m[2].toLowerCase();
-    // Mixed case: redirect to lowercase before any paint
-    if (lc !== location.pathname) {
-      location.replace(lc);
+    var p = location.pathname;
+    // A published page reached by the recovery script's reload: take our
+    // parameters (pdpRetry, pdpFresh) back out of the address, keeping every
+    // other one as it is (the product list adds page/sort/filter itself), and
+    // without reloading. Never on the 404 page, where pdpRetry is the
+    // recovery script's loop guard.
+    var parts = location.search ? location.search.slice(1).split('&') : [];
+    var kept = parts.filter(function (kv) {
+      var k = kv.split('=')[0];
+      return k !== 'pdpRetry' && k !== 'pdpFresh';
+    });
+    if (!window.isErrorPage && kept.length !== parts.length) {
+      history.replaceState(history.state, '', p + (kept.length ? '?' + kept.join('&') : '') + location.hash);
+    }
+    var m = p.match(/^\/products\/([^/]+)\/([^/]+)$/);
+    if (m) {
+      var lc = '/products/' + m[1].toLowerCase() + '/' + m[2].toLowerCase();
+      // Mixed case: redirect to lowercase before any paint
+      if (lc !== p) {
+        location.replace(lc);
+        return;
+      }
+    } else if (!/^(?:\/[a-z0-9-]+)+$/.test(p) || p === '/404'
+      || p === '/categories/default' || p === '/products/default') {
+      // Neither a product nor a category address: not ours.
       return;
     }
-    // Already lowercase. If this is a 404 page (cold path: SKU never
-    // published), the storefront's default 404 chrome will paint before
-    // delayed.js loads and runs our cold-path snippet. Hide just the
+    // Already lowercase. If this is a 404 page (cold path: page never
+    // published), the storefront's default 404 chrome could paint before
+    // the recovery script at the end of the body runs. Hide just the
     // <main> (not the whole body) so the storefront's header and footer
     // — populated by scripts.js as usual — stay visible while we wait.
     // User sees real storefront chrome around a loading area, not a
