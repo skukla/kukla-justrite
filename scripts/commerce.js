@@ -291,9 +291,85 @@ export async function fetchIndex(indexFile, pageSize = 500) {
 /**
  * Loads commerce-specific eager content
  */
+/**
+ * Demo Builder: a loading skeleton for the product page. The product-details
+ * section stays hidden until the product data has loaded, so this draws the
+ * drop-in Skeleton in that block's own layout just before the section, and
+ * removes it once the section is shown.
+ */
+async function showProductSkeleton() {
+  const section = document.querySelector('main .product-details')?.closest('.section');
+  if (!section) return;
+  const [{ Skeleton, SkeletonRow, provider: UI }, { h }] = await Promise.all([
+    import('@dropins/tools/components.js'),
+    import('@dropins/tools/preact.js'),
+  ]);
+  // One row per wrapper: a global drop-in rule hides a skeleton row after the
+  // first among its siblings on small screens.
+  const row = (props, className) => h('div', {
+    className,
+    children: h(SkeletonRow, { fullWidth: true, ...props }),
+  });
+  const image = { style: { height: 'auto', aspectRatio: '960 / 1191', maxHeight: '60vh' } };
+  const placeholder = document.createElement('div');
+  placeholder.className = 'product-details-skeleton';
+  placeholder.style.margin = '0 0 var(--spacing-xbig)';
+  const inner = document.createElement('div');
+  Object.assign(inner.style, { maxWidth: '1200px', margin: 'auto', padding: '0 var(--spacing-big)' });
+  placeholder.append(inner);
+  section.before(placeholder);
+  await UI.render(Skeleton, {
+    className: 'product-details__wrapper',
+    children: [
+      h('div', {
+        className: 'product-details__left-column',
+        children: row(image),
+      }),
+      h('div', {
+        className: 'product-details__right-column',
+        style: { display: 'grid', gap: 'var(--spacing-medium)', alignContent: 'start' },
+        children: [
+          row({ variant: 'heading', size: 'xlarge' }),
+          row({ variant: 'heading', size: 'medium', style: { width: '40%' } }),
+          // The block shows its gallery here on small screens only, by this class.
+          row(image, 'product-details__gallery'),
+          row({ size: 'medium' }),
+          row({ size: 'medium' }),
+          row({ size: 'small', style: { width: '30%' } }),
+          row({ size: 'large' }),
+        ],
+      }),
+    ],
+  })(inner);
+  const removeOnceShown = () => {
+    if (section.dataset.sectionStatus !== 'loaded') return false;
+    placeholder.remove();
+    return true;
+  };
+  if (removeOnceShown()) return;
+  const observer = new MutationObserver(() => {
+    if (removeOnceShown()) observer.disconnect();
+  });
+  observer.observe(section, { attributes: true, attributeFilter: ['data-section-status'] });
+}
+
 export async function loadCommerceEager() {
   const pageType = detectPageType();
   initializeAdobeDataLayer(pageType);
+
+  // Demo Builder: a product page no longer stays blank while its data loads.
+  // The product is fetched while a skeleton shows; the product-details block
+  // replaces it, and the page is told it is ready once the data is in.
+  if (pageType === 'Product') {
+    const productReady = handleCommercePageType(pageType);
+    await showProductSkeleton().catch((e) => console.warn('Product skeleton not shown:', e));
+    productReady.then(() => notifyUI('lcp'), (e) => {
+      console.error('Error initializing commerce configuration:', e);
+      loadErrorPage(418);
+    });
+    return;
+  }
+
   await handleCommercePageType(pageType);
 
   // notify that the page is ready for eager loading
