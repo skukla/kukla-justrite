@@ -68,14 +68,10 @@ export default async function decorate(block) {
   applySearchStateToUrl(normalizedUrl, searchState);
   window.history.replaceState({}, '', normalizedUrl.toString());
 
-  // Request search based on the page type on block load.
-  // Demo Builder: the search is started, not awaited, so the containers below
-  // mount at once and the product list shows its own loading skeleton instead
-  // of a blank page. The URL listener at the end waits for this first search.
-  let initialSearch;
+  // Request search based on the page type on block load
   if (config.urlpath) {
     // If it's a category page...
-    initialSearch = search({
+    await search({
       phrase: '', // search all products in the category
       currentPage: searchState.currentPage,
       pageSize,
@@ -91,7 +87,7 @@ export default async function decorate(block) {
     });
   } else {
     // Search page: dropin uses only the request (no URL parsing).
-    initialSearch = search({
+    await search({
       phrase: searchState.phrase,
       currentPage: searchState.currentPage,
       pageSize,
@@ -245,13 +241,9 @@ export default async function decorate(block) {
 
   // Listen for search results (event is fired after the block is rendered; eager: false)
   // URL is owned by this project; update it when search state changes.
-  // Demo Builder: added once the first search has settled, so its result does not
-  // push a second history entry for the page just opened (the search is no longer
-  // awaited above; without that change this waits for nothing).
-  const firstSearch = typeof initialSearch === 'undefined' ? Promise.resolve() : initialSearch;
-  firstSearch.then(() => events.on('search/result', (payload) => {
+  events.on('search/result', (payload) => {
     const url = new URL(window.location.href);
     applySearchStateToUrl(url, payload.request);
     window.history.pushState({}, '', url.toString());
-  }, { eager: false }));
+  }, { eager: false });
 }

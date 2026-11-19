@@ -128,16 +128,6 @@
   --type-fixed-font-family: adobe-clean, "Roboto Mono", menlo, consolas, "Liberation Mono", monospace, system-ui, sans-serif;
   --background-color: var(--color-neutral-50);
   --nav-height: 6.4rem;
-
-  /* ComplianceSigns demo brand tokens (homepage migration) */
-  --cs-navy: #16233f;
-  --cs-navy-2: #1d2d4d;
-  --cs-blue: #1f56a4;
-  --cs-orange: #ee7523;
-  --cs-orange-hover: #d3651a;
-  --cs-ink: #222;
-  --cs-gray-band: #eef1f5;
-  --cs-heading-font: "Barlow Condensed", oswald, "Arial Narrow", sans-serif;
 }
 
 /* fallback font */

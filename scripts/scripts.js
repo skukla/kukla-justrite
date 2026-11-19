@@ -184,30 +184,11 @@ function decorateButtons(main) {
  * Decorates the main element.
  * @param {Element} main The main element
  */
-/**
- * Activate the boilerplate's authored column layout (Demo Builder thin-layer patch).
- * The account page authors a 30%/70% split via Section Metadata (data-column-width),
- * but the boilerplate only lays sections into a row when body.columns is set and each
- * section carries the --column-width var, and nothing translates the authored attribute.
- * Feed data-column-width into --column-width and switch on body.columns so the existing
- * `body.columns main > .section { flex-basis: var(--column-width) }` rule renders the
- * sidebar layout (mobile stacks below 900px). Layout only - no styling.
- */
-function decorateColumnSections(main) {
-  const columns = main.querySelectorAll(':scope > .section[data-column-width]');
-  if (!columns.length) return;
-  columns.forEach((section) => {
-    section.style.setProperty('--column-width', section.dataset.columnWidth);
-  });
-  document.body.classList.add('columns');
-}
-
 export function decorateMain(main) {
   decorateLinks(main);
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
-  decorateColumnSections(main);
   decorateBlocks(main);
   decorateButtons(main);
 }

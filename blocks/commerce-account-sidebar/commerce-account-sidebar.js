@@ -5,12 +5,7 @@ import { CUSTOMER_ORDERS_PATH, rootLink } from '../../scripts/commerce.js';
 
 export default async function decorate(block) {
   const fragment = await loadFragment('/customer/sidebar-fragment');
-  // Match the authored structure (main > div > ol > li) in addition to the
-// post-decoration class. The .default-content-wrapper class is added by
-// EDS's decoration pipeline, and its timing races against this query; on a
-// freshly-published storefront the race tips the wrong way and the sidebar
-// renders empty. The structural selector finds the items regardless.
-const sidebarItemsConfig = fragment.querySelectorAll('main > div > ol > li, .default-content-wrapper > ol > li');
+  const sidebarItemsConfig = fragment.querySelectorAll('.default-content-wrapper > ol > li');
   const sidebarItems = Array.from(sidebarItemsConfig).map((item) => {
     const itemParams = Array.from(item.querySelectorAll('ol > li'));
     const itemTitle = item.childNodes[0]?.textContent?.trim() || item.querySelector(':scope > p')?.textContent?.trim() || 'Default Title';

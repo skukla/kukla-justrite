@@ -208,8 +208,6 @@ export default async function decorate(block) {
           navSection.setAttribute('aria-haspopup', 'true');
           navSection.setAttribute('aria-expanded', 'false');
         }
-        // "Request a Quote" moves to nav-tools as an icon on desktop (see below)
-        if (/request a quote/i.test(navSection.textContent)) navSection.classList.add('nav-quote');
         setupSubmenu(navSection);
         navSection.addEventListener('click', (event) => {
           if (event.target.tagName === 'A') return;
@@ -241,21 +239,6 @@ export default async function decorate(block) {
     navTools = document.createElement('div');
     navTools.classList.add('nav-tools');
     nav.appendChild(navTools);
-  }
-
-  /** Request a Quote: icon beside the wishlist on desktop; the text link in
-   *  nav-sections is kept for the mobile menu (CSS shows only one at a time) */
-  const quoteLink = navSections?.querySelector('.nav-quote a');
-  if (quoteLink) {
-    const quoteWrapper = document.createElement('div');
-    quoteWrapper.className = 'quote-wrapper nav-tools-wrapper';
-    const quoteButton = document.createElement('a');
-    quoteButton.className = 'nav-quote-button';
-    quoteButton.href = quoteLink.href;
-    quoteButton.title = quoteLink.textContent.trim();
-    quoteButton.setAttribute('aria-label', quoteButton.title);
-    quoteWrapper.append(quoteButton);
-    navTools.append(quoteWrapper);
   }
 
   /** Wishlist */
